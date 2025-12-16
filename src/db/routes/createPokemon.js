@@ -4,17 +4,8 @@ const auth = require('../../auth/auth')
 
 module.exports = (app) => {
 	app.post('/api/pokemons', auth, (req, res) => {
-		// const { name, hp, cp, picture, types } = req.body
-		Pokemon.create(
-			req.body
-			// {
-			// name,
-			// hp,
-			// cp,
-			// picture,
-			// types,
-			// }
-		)
+		const { name, hp, cp, picture, types } = req.body
+		Pokemon.create({ name, hp, cp, picture, types })
 			.then((pokemon) => {
 				const message = `Le pokémon ${req.body.name} a bien été créé.`
 				res.json({ message, data: pokemon })
