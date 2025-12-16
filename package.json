@@ -1,0 +1,25 @@
+{
+	"name": "node-pokemon-api",
+	"version": "1.0.0",
+	"description": "An awesome API REST to handle some pokemons.",
+	"license": "MIT",
+	"author": "Laurent TRINCO",
+	"type": "commonjs",
+	"main": "app.js",
+	"scripts": {
+		"start": "nodemon app.js"
+	},
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"body-parser": "^2.2.0",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.3",
+		"mariadb": "^3.4.5",
+		"sequelize": "^6.37.7",
+		"serve-favicon": "^2.5.1"
+	},
+	"devDependencies": {
+		"morgan": "^1.10.1",
+		"nodemon": "^3.1.11"
+	}
+}
