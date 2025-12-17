@@ -1,5 +1,4 @@
 const express = require('express')
-const morgan = require('morgan')
 const favicons = require('serve-favicon')
 const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
@@ -7,12 +6,13 @@ const sequelize = require('./src/db/sequelize')
 const app = express()
 const port = process.env.PORT || 3000
 
-app
-	.use(favicons(__dirname + '/favicon.ico'))
-	.use(morgan('dev'))
-	.use(bodyParser.json())
+app.use(favicons(__dirname + '/favicon.ico')).use(bodyParser.json())
 
 sequelize.initDb()
+
+app.get('/', (req, res) => {
+	res.json({ message: 'Bienvenue sur le projet Node Pokemon API hébergé sur O2Switch ! 🚀' })
+})
 
 // Endpoints
 require('./src/db/routes/findAllPokemons')(app)
