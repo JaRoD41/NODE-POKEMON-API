@@ -1,20 +1,23 @@
 const express = require('express')
-const favicons = require('serve-favicon')
 const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
 
 const app = express()
-// const port = process.env.PORT || 3000
 
-app.use(favicons(__dirname + '/favicon.ico')).use(bodyParser.json())
+// 1. LE PORT : On utilise celui de l'environnement, sinon 3000 par défaut
+const port = process.env.PORT || 3000
 
+app.use(bodyParser.json())
+
+// 2. LA BDD : On initialise la connexion
+// Je m'assure que mon fichier sequelize.js utilise bien les variables d'environnement qu'on a définies
 sequelize.initDb()
 
 app.get('/', (req, res) => {
-	res.json({ message: 'Bienvenue sur le projet Node Pokemon API hébergé sur O2Switch ! 🚀' })
+	res.json({ message: 'API Pokemon en ligne sur o2switch !' })
 })
 
-// Endpoints
+// Vos routes
 require('./src/db/routes/findAllPokemons')(app)
 require('./src/db/routes/findPokemonByPk')(app)
 require('./src/db/routes/createPokemon')(app)
@@ -22,20 +25,16 @@ require('./src/db/routes/updatePokemon')(app)
 require('./src/db/routes/deletePokemon')(app)
 require('./src/db/routes/login')(app)
 
-// Middleware pour capturer les routes non définies (404)
-app.use((req, res, next) => {
-	const error = new Error('Not Found')
-	error.status = 404
-	next(error)
+// Gestion des erreurs 404
+app.use(({ res }) => {
+	const message = 'Impossible de trouver la ressource demandée ! Vous pouvez essayer une autre URL.'
+	res.status(404).json({ message })
 })
 
-// Middleware d'erreur (doit être le dernier app.use)
-app.use((err, req, res, next) => {
-	const status = err.status || 500
-	const message = err.message
-	res.status(status).json({ message })
+// 3. LE DEMARRAGE : C'est OBLIGATOIRE sur o2switch contrairement à ce qu'on m'a dit.
+// Sans ça, le script s'arrête et Passenger relance l'app en boucle (crash).
+app.listen(port, () => {
+	console.log(`Serveur démarré sur le port ${port}`)
 })
-
-// app.listen(port, () => console.log(`Listening on port ${port}`))
 
 module.exports = app
