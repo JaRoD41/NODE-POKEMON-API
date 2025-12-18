@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
 
 const app = express()
-const port = process.env.PORT || 3000
+// const port = process.env.PORT || 3000
 
 app.use(favicons(__dirname + '/favicon.ico')).use(bodyParser.json())
 
@@ -36,4 +36,6 @@ app.use((err, req, res, next) => {
 	res.status(status).json({ message })
 })
 
-app.listen(port, () => console.log(`Listening on port ${port}`))
+// app.listen(port, () => console.log(`Listening on port ${port}`))
+
+module.exports = app
