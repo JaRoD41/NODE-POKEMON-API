@@ -1,1 +1,1 @@
-module.exports = 'CUSTOM_PRIVATE_KEY';
+module.exports = process.env.PRIVATE_KEY || 'CUSTOM_PRIVATE_KEY'
