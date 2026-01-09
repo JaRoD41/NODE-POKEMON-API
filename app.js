@@ -1,13 +1,18 @@
+require('dotenv').config({
+	path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local'
+})
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
+const cors = require('cors')
 
 const app = express()
 
 // 1. LE PORT : On utilise celui de l'environnement, sinon 3000 par défaut
 const port = process.env.PORT || 3000
 
-app.use(bodyParser.json())
+app.use(bodyParser.json()).use(cors())
 
 // 2. LA BDD : On initialise la connexion
 // Je m'assure que mon fichier sequelize.js utilise bien les variables d'environnement qu'on a définies
@@ -26,7 +31,7 @@ require('./src/db/routes/deletePokemon')(app)
 require('./src/db/routes/login')(app)
 
 // Gestion des erreurs 404
-app.use(({ res }) => {
+app.use((req, res) => {
 	const message = 'Impossible de trouver la ressource demandée ! Vous pouvez essayer une autre URL.'
 	res.status(404).json({ message })
 })
