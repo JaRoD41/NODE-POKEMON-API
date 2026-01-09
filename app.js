@@ -1,6 +1,10 @@
-require('dotenv').config({
-	path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local'
-})
+// On ne charge dotenv que si on n'est PAS en production
+// En production (O2Switch), les variables d'environnement sont gérées par cPanel
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config({
+		path: '.env.local',
+	})
+}
 
 const express = require('express')
 const bodyParser = require('body-parser')
